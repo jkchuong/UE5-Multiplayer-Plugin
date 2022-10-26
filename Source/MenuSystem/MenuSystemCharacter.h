@@ -2,8 +2,10 @@
 
 #pragma once
 
+#include "Interfaces/OnlineSessionInterface.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+
 #include "MenuSystemCharacter.generated.h"
 
 UCLASS(config=Game)
@@ -65,6 +67,25 @@ public:
 public:
 
 	/** Pointer to the online session interface. "IOnlineSessionPtr" is the alias for the actual type (typedef) **/
-	TSharedPtr<class IOnlineSession, ESPMode::ThreadSafe> OnlineSessionInterface;
+	IOnlineSessionPtr OnlineSessionInterface;
+
+protected:
+
+	UFUNCTION(BlueprintCallable)
+	void CreateGameSession();
+
+	UFUNCTION(BlueprintCallable)
+	void JoinGameSession();
+
+	void OnCreateSessionComplete(FName SessionName, bool bWasSuccessful);
+	void OnFindSessionsComplete(bool bWasSuccessful);
+	void OnJoinSessionComplete(FName SessionName, EOnJoinSessionCompleteResult::Type Result);
+
+private:
+
+	FOnCreateSessionCompleteDelegate CreateSessionCompleteDelegate;
+	FOnFindSessionsCompleteDelegate FindSessionsCompleteDelegate;
+	FOnJoinSessionCompleteDelegate JoinSessionCompleteDelegate;
+	TSharedPtr<FOnlineSessionSearch> SessionSearch;
 };
 
