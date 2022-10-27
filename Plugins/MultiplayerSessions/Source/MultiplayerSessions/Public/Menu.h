@@ -19,11 +19,19 @@ class MULTIPLAYERSESSIONS_API UMenu : public UUserWidget
 public:
 
 	UFUNCTION(BlueprintCallable)
-	void MenuSetup();
+	void MenuSetup(int32 NumberOfPublicConnections = 4, FString TypeOfMatch = FString(TEXT("FreeForAll")));
 
 protected:
 
 	virtual bool Initialize() override;
+	virtual void OnLevelRemovedFromWorld(ULevel* InLevel, UWorld* InWorld) override;
+
+	/**
+	*  Callbacks for the custom delegates on the MultiplayerSessionsSubsystem
+	*  These must be UFUNCTIONs to be bound
+	*/
+	UFUNCTION()
+	void OnCreateSession(bool bWasSuccessful);
 
 private:
 
@@ -38,4 +46,12 @@ private:
 
 	UFUNCTION()
 	void JoinButtonClicked();
+
+	void MenuTearDown();
+
+	// The class for adding that actual multiplayer functionality
+	class UMultiplayerSessionsSubsystem* MultiplayerSessionsSubsystem;
+
+	int32 NumPublicConnections{ 4 };
+	FString MatchType{TEXT("FreeForAll")};
 };
