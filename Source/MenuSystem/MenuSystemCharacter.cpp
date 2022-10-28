@@ -62,6 +62,7 @@ AMenuSystemCharacter::AMenuSystemCharacter() :
 	{
 		OnlineSessionInterface = OnlineSubsystem->GetSessionInterface(); // NULL in PIE, Steam when packaged
 
+		/*
 		if(GEngine)
 		{
 			GEngine->AddOnScreenDebugMessage(
@@ -71,6 +72,7 @@ AMenuSystemCharacter::AMenuSystemCharacter() :
 				FString::Printf(TEXT("Found subsystem %s"), *OnlineSubsystem->GetSubsystemName().ToString())
 			);
 		}
+		*/
 	}
 }
 
